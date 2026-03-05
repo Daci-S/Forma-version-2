@@ -18,839 +18,166 @@
   }
 
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
   html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', sans-serif; background: var(--dark); color: var(--white); overflow-x: hidden; cursor: none; }
 
-  body {
-    font-family: 'Outfit', sans-serif;
-    background: var(--dark);
-    color: var(--white);
-    overflow-x: hidden;
-    cursor: none;
-  }
+  .cursor { position: fixed; width: 10px; height: 10px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; transition: transform 0.15s ease; transform: translate(-50%, -50%); }
+  .cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid rgba(201,169,110,0.5); border-radius: 50%; pointer-events: none; z-index: 9998; transition: transform 0.08s linear, width 0.3s ease, height 0.3s ease, opacity 0.3s ease; transform: translate(-50%, -50%); }
 
-  /* CUSTOM CURSOR */
-  .cursor {
-    position: fixed;
-    width: 10px; height: 10px;
-    background: var(--gold);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.15s ease;
-    transform: translate(-50%, -50%);
-  }
-  .cursor-ring {
-    position: fixed;
-    width: 36px; height: 36px;
-    border: 1px solid rgba(201,169,110,0.5);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transition: transform 0.08s linear, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
-    transform: translate(-50%, -50%);
-  }
-  body:hover .cursor-ring { opacity: 1; }
-  a:hover ~ .cursor, button:hover ~ .cursor { transform: translate(-50%, -50%) scale(2.5); }
-
-  /* NAV */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 28px 60px;
-    background: linear-gradient(to bottom, rgba(14,14,14,0.95) 0%, transparent 100%);
-    transition: background 0.4s ease;
-  }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 28px 60px; background: linear-gradient(to bottom, rgba(14,14,14,0.95) 0%, transparent 100%); transition: background 0.4s ease; }
   nav.scrolled { background: rgba(14,14,14,0.97); backdrop-filter: blur(12px); padding: 18px 60px; }
-
-  .nav-logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem;
-    font-weight: 300;
-    letter-spacing: 0.3em;
-    color: var(--white);
-    text-decoration: none;
-  }
+  .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 300; letter-spacing: 0.3em; color: var(--white); text-decoration: none; }
   .nav-logo span { color: var(--gold); }
-
-  .nav-links {
-    display: flex; gap: 44px; list-style: none;
-  }
-  .nav-links a {
-    font-size: 0.72rem;
-    font-weight: 300;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: rgba(253,252,250,0.65);
-    text-decoration: none;
-    transition: color 0.3s ease;
-    position: relative;
-  }
-  .nav-links a::after {
-    content: '';
-    position: absolute; bottom: -4px; left: 0;
-    width: 0; height: 1px;
-    background: var(--gold);
-    transition: width 0.3s ease;
-  }
+  .nav-links { display: flex; gap: 44px; list-style: none; }
+  .nav-links a { font-size: 0.72rem; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(253,252,250,0.65); text-decoration: none; transition: color 0.3s ease; position: relative; }
+  .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--gold); transition: width 0.3s ease; }
   .nav-links a:hover { color: var(--white); }
   .nav-links a:hover::after { width: 100%; }
-
-  .nav-cta {
-    font-size: 0.7rem;
-    font-weight: 400;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--gold);
-    text-decoration: none;
-    border: 1px solid var(--gold);
-    padding: 10px 24px;
-    transition: all 0.3s ease;
-  }
+  .nav-cta { font-size: 0.7rem; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); text-decoration: none; border: 1px solid var(--gold); padding: 10px 24px; transition: all 0.3s ease; }
   .nav-cta:hover { background: var(--gold); color: var(--dark); }
 
-  /* HERO — THREE.JS 3D */
-  #hero {
-    position: relative;
-    width: 100%; height: 100vh;
-    overflow: hidden;
-    display: flex; align-items: center;
-  }
-
-  #hero-canvas {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 0;
-  }
-
-  .hero-content {
-    position: relative; z-index: 2;
-    padding: 0 60px;
-    max-width: 800px;
-  }
-
-  .hero-tag {
-    font-size: 0.65rem;
-    font-weight: 300;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 28px;
-    opacity: 0;
-    animation: fadeUp 1s ease 0.5s forwards;
-    display: flex; align-items: center; gap: 14px;
-  }
-  .hero-tag::before {
-    content: '';
-    width: 40px; height: 1px;
-    background: var(--gold);
-  }
-
-  .hero-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(3.5rem, 7vw, 6.5rem);
-    font-weight: 300;
-    line-height: 1.05;
-    letter-spacing: -0.01em;
-    margin-bottom: 28px;
-    opacity: 0;
-    animation: fadeUp 1s ease 0.75s forwards;
-  }
-  .hero-title em {
-    font-style: italic;
-    color: var(--gold);
-  }
-
-  .hero-sub {
-    font-size: 0.9rem;
-    font-weight: 200;
-    line-height: 1.8;
-    color: rgba(253,252,250,0.6);
-    max-width: 420px;
-    margin-bottom: 48px;
-    opacity: 0;
-    animation: fadeUp 1s ease 1s forwards;
-  }
-
-  .hero-btns {
-    display: flex; gap: 20px; align-items: center;
-    opacity: 0;
-    animation: fadeUp 1s ease 1.25s forwards;
-  }
-
-  .btn-primary {
-    background: var(--gold);
-    color: var(--dark);
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    padding: 16px 36px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    display: inline-block;
-  }
+  #hero { position: relative; width: 100%; height: 100vh; overflow: hidden; display: flex; align-items: center; }
+  #hero-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+  .hero-content { position: relative; z-index: 2; padding: 0 60px; max-width: 800px; }
+  .hero-tag { font-size: 0.65rem; font-weight: 300; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 28px; opacity: 0; animation: fadeUp 1s ease 0.5s forwards; display: flex; align-items: center; gap: 14px; }
+  .hero-tag::before { content: ''; width: 40px; height: 1px; background: var(--gold); }
+  .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(3.5rem, 7vw, 6.5rem); font-weight: 300; line-height: 1.05; letter-spacing: -0.01em; margin-bottom: 28px; opacity: 0; animation: fadeUp 1s ease 0.75s forwards; }
+  .hero-title em { font-style: italic; color: var(--gold); }
+  .hero-sub { font-size: 0.9rem; font-weight: 200; line-height: 1.8; color: rgba(253,252,250,0.6); max-width: 420px; margin-bottom: 48px; opacity: 0; animation: fadeUp 1s ease 1s forwards; }
+  .hero-btns { display: flex; gap: 20px; align-items: center; opacity: 0; animation: fadeUp 1s ease 1.25s forwards; }
+  .btn-primary { background: var(--gold); color: var(--dark); font-family: 'Outfit', sans-serif; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; padding: 16px 36px; text-decoration: none; transition: all 0.3s ease; display: inline-block; }
   .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
-
-  .btn-ghost {
-    font-size: 0.72rem;
-    font-weight: 300;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(253,252,250,0.7);
-    text-decoration: none;
-    display: flex; align-items: center; gap: 10px;
-    transition: color 0.3s ease;
-  }
+  .btn-ghost { font-size: 0.72rem; font-weight: 300; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(253,252,250,0.7); text-decoration: none; display: flex; align-items: center; gap: 10px; transition: color 0.3s ease; }
   .btn-ghost:hover { color: var(--white); }
   .btn-ghost svg { transition: transform 0.3s ease; }
   .btn-ghost:hover svg { transform: translateX(5px); }
+  .hero-scroll { position: absolute; bottom: 40px; right: 60px; display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 2; opacity: 0; animation: fadeIn 1s ease 2s forwards; }
+  .hero-scroll span { font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(253,252,250,0.4); writing-mode: vertical-rl; }
+  .scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollPulse 2s ease infinite; }
 
-  .hero-scroll {
-    position: absolute;
-    bottom: 40px; right: 60px;
-    display: flex; flex-direction: column; align-items: center; gap: 10px;
-    z-index: 2;
-    opacity: 0;
-    animation: fadeIn 1s ease 2s forwards;
-  }
-  .hero-scroll span {
-    font-size: 0.6rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: rgba(253,252,250,0.4);
-    writing-mode: vertical-rl;
-  }
-  .scroll-line {
-    width: 1px; height: 60px;
-    background: linear-gradient(to bottom, var(--gold), transparent);
-    animation: scrollPulse 2s ease infinite;
-  }
-
-  /* NUMBERS BAR */
-  .stats-bar {
-    background: var(--charcoal);
-    border-top: 1px solid rgba(201,169,110,0.15);
-    border-bottom: 1px solid rgba(201,169,110,0.15);
-    padding: 40px 60px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-  }
-  .stat-item {
-    text-align: center;
-    padding: 0 20px;
-    border-right: 1px solid rgba(255,255,255,0.07);
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.6s ease;
-  }
+  .stats-bar { background: var(--charcoal); border-top: 1px solid rgba(201,169,110,0.15); border-bottom: 1px solid rgba(201,169,110,0.15); padding: 40px 60px; display: grid; grid-template-columns: repeat(4, 1fr); }
+  .stat-item { text-align: center; padding: 0 20px; border-right: 1px solid rgba(255,255,255,0.07); opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
   .stat-item:last-child { border-right: none; }
   .stat-item.visible { opacity: 1; transform: translateY(0); }
+  .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 300; color: var(--gold); line-height: 1; margin-bottom: 8px; }
+  .stat-label { font-size: 0.65rem; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; color: var(--warm-gray); }
 
-  .stat-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3rem;
-    font-weight: 300;
-    color: var(--gold);
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-  .stat-label {
-    font-size: 0.65rem;
-    font-weight: 300;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--warm-gray);
-  }
-
-  /* ABOUT */
-  #about {
-    padding: 130px 60px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 100px;
-    align-items: center;
-  }
-
-  .section-label {
-    font-size: 0.62rem;
-    font-weight: 300;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 24px;
-    display: flex; align-items: center; gap: 14px;
-  }
-  .section-label::before {
-    content: '';
-    width: 30px; height: 1px;
-    background: var(--gold);
-  }
-
-  .section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2.2rem, 4vw, 3.5rem);
-    font-weight: 300;
-    line-height: 1.2;
-    margin-bottom: 28px;
-  }
+  #about { padding: 130px 60px; display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
+  .section-label { font-size: 0.62rem; font-weight: 300; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; display: flex; align-items: center; gap: 14px; }
+  .section-label::before { content: ''; width: 30px; height: 1px; background: var(--gold); }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 300; line-height: 1.2; margin-bottom: 28px; }
   .section-title em { font-style: italic; color: var(--gold); }
+  .section-body { font-size: 0.88rem; font-weight: 200; line-height: 1.9; color: rgba(253,252,250,0.6); margin-bottom: 20px; }
+  .about-visual { position: relative; height: 520px; }
+  .about-img-main { width: 75%; height: 100%; object-fit: cover; position: absolute; right: 0; top: 0; filter: brightness(0.85) contrast(1.1); }
+  .about-img-accent { width: 48%; height: 45%; object-fit: cover; position: absolute; left: 0; bottom: 0; border: 4px solid var(--dark); filter: brightness(0.85) contrast(1.1); }
+  .about-badge { position: absolute; top: 30px; left: 20px; background: var(--gold); color: var(--dark); padding: 18px 22px; z-index: 2; text-align: center; }
+  .about-badge .num { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; line-height: 1; display: block; }
+  .about-badge .lbl { font-size: 0.58rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; display: block; margin-top: 4px; }
 
-  .section-body {
-    font-size: 0.88rem;
-    font-weight: 200;
-    line-height: 1.9;
-    color: rgba(253,252,250,0.6);
-    margin-bottom: 20px;
-  }
-
-  .about-visual {
-    position: relative;
-    height: 520px;
-  }
-
-  .about-img-main {
-    width: 75%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
-    right: 0;
-    top: 0;
-    filter: brightness(0.85) contrast(1.1);
-  }
-
-  .about-img-accent {
-    width: 48%;
-    height: 45%;
-    object-fit: cover;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    border: 4px solid var(--dark);
-    filter: brightness(0.85) contrast(1.1);
-  }
-
-  .about-badge {
-    position: absolute;
-    top: 30px; left: 20px;
-    background: var(--gold);
-    color: var(--dark);
-    padding: 18px 22px;
-    z-index: 2;
-    text-align: center;
-  }
-  .about-badge .num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem;
-    font-weight: 300;
-    line-height: 1;
-    display: block;
-  }
-  .about-badge .lbl {
-    font-size: 0.58rem;
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    display: block;
-    margin-top: 4px;
-  }
-
-  /* SERVICES */
-  #services {
-    padding: 130px 60px;
-    background: var(--charcoal);
-  }
-
-  .services-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 70px;
-  }
-
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-  }
-
-  .service-card {
-    background: var(--dark);
-    padding: 48px 40px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s ease;
-    cursor: pointer;
-  }
-  .service-card::before {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 0; height: 2px;
-    background: var(--gold);
-    transition: width 0.4s ease;
-  }
+  #services { padding: 130px 60px; background: var(--charcoal); }
+  .services-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 70px; }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .service-card { background: var(--dark); padding: 48px 40px; position: relative; overflow: hidden; transition: all 0.4s ease; cursor: pointer; }
+  .service-card::before { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--gold); transition: width 0.4s ease; }
   .service-card:hover { background: #1E1E1E; transform: translateY(-4px); }
   .service-card:hover::before { width: 100%; }
-
-  .service-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 4rem;
-    font-weight: 300;
-    color: rgba(201,169,110,0.12);
-    line-height: 1;
-    margin-bottom: 24px;
-    transition: color 0.4s ease;
-  }
+  .service-num { font-family: 'Cormorant Garamond', serif; font-size: 4rem; font-weight: 300; color: rgba(201,169,110,0.12); line-height: 1; margin-bottom: 24px; transition: color 0.4s ease; }
   .service-card:hover .service-num { color: rgba(201,169,110,0.25); }
-
-  .service-icon {
-    width: 36px; height: 36px;
-    margin-bottom: 20px;
-    opacity: 0.7;
-  }
-
-  .service-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.5rem;
-    font-weight: 400;
-    margin-bottom: 16px;
-    letter-spacing: 0.02em;
-  }
-
-  .service-desc {
-    font-size: 0.82rem;
-    font-weight: 200;
-    line-height: 1.8;
-    color: rgba(253,252,250,0.5);
-    margin-bottom: 28px;
-  }
-
-  .service-link {
-    font-size: 0.65rem;
-    font-weight: 400;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    text-decoration: none;
-    display: flex; align-items: center; gap: 8px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
+  .service-icon { width: 36px; height: 36px; margin-bottom: 20px; opacity: 0.7; }
+  .service-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; margin-bottom: 16px; letter-spacing: 0.02em; }
+  .service-desc { font-size: 0.82rem; font-weight: 200; line-height: 1.8; color: rgba(253,252,250,0.5); margin-bottom: 28px; }
+  .service-link { font-size: 0.65rem; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); text-decoration: none; display: flex; align-items: center; gap: 8px; opacity: 0; transition: opacity 0.3s ease; }
   .service-card:hover .service-link { opacity: 1; }
 
-  /* PORTFOLIO */
-  #portfolio {
-    padding: 130px 60px;
-  }
-
-  .portfolio-header {
-    display: flex; justify-content: space-between; align-items: flex-end;
-    margin-bottom: 60px;
-  }
-
-  .portfolio-filter {
-    display: flex; gap: 6px;
-  }
-
-  .filter-btn {
-    font-size: 0.65rem;
-    font-weight: 300;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    padding: 8px 18px;
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.1);
-    color: rgba(253,252,250,0.5);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: 'Outfit', sans-serif;
-  }
-  .filter-btn.active, .filter-btn:hover {
-    border-color: var(--gold);
-    color: var(--gold);
-  }
-
-  .portfolio-grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: auto;
-    gap: 12px;
-  }
-
-  .portfolio-item {
-    position: relative;
-    overflow: hidden;
-    background: var(--charcoal);
-    cursor: pointer;
-  }
+  #portfolio { padding: 130px 60px; }
+  .portfolio-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; }
+  .portfolio-filter { display: flex; gap: 6px; }
+  .filter-btn { font-size: 0.65rem; font-weight: 300; letter-spacing: 0.15em; text-transform: uppercase; padding: 8px 18px; background: transparent; border: 1px solid rgba(255,255,255,0.1); color: rgba(253,252,250,0.5); cursor: pointer; transition: all 0.3s ease; font-family: 'Outfit', sans-serif; }
+  .filter-btn.active, .filter-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .portfolio-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; }
+  .portfolio-item { position: relative; overflow: hidden; background: var(--charcoal); cursor: pointer; }
   .portfolio-item:nth-child(1) { grid-column: span 7; grid-row: span 2; }
   .portfolio-item:nth-child(2) { grid-column: span 5; }
   .portfolio-item:nth-child(3) { grid-column: span 5; }
   .portfolio-item:nth-child(4) { grid-column: span 4; }
   .portfolio-item:nth-child(5) { grid-column: span 4; }
   .portfolio-item:nth-child(6) { grid-column: span 4; }
-
-  .portfolio-img {
-    width: 100%;
-    height: 100%;
-    min-height: 260px;
-    object-fit: cover;
-    transition: transform 0.7s ease, filter 0.4s ease;
-    filter: brightness(0.8) saturate(0.9);
-    display: block;
-  }
+  .portfolio-img { width: 100%; height: 100%; min-height: 260px; object-fit: cover; transition: transform 0.7s ease, filter 0.4s ease; filter: brightness(0.8) saturate(0.9); display: block; }
   .portfolio-item:nth-child(1) .portfolio-img { min-height: 520px; }
-
-  .portfolio-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(14,14,14,0.92) 0%, transparent 50%);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 32px;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
+  .portfolio-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(14,14,14,0.92) 0%, transparent 50%); display: flex; flex-direction: column; justify-content: flex-end; padding: 32px; opacity: 0; transition: opacity 0.4s ease; }
   .portfolio-item:hover .portfolio-overlay { opacity: 1; }
   .portfolio-item:hover .portfolio-img { transform: scale(1.06); filter: brightness(0.65) saturate(0.8); }
+  .portfolio-cat { font-size: 0.6rem; font-weight: 300; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .portfolio-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 300; margin-bottom: 4px; }
+  .portfolio-loc { font-size: 0.75rem; font-weight: 200; color: rgba(253,252,250,0.6); }
 
-  .portfolio-cat {
-    font-size: 0.6rem;
-    font-weight: 300;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 8px;
-  }
-  .portfolio-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.5rem;
-    font-weight: 300;
-    margin-bottom: 4px;
-  }
-  .portfolio-loc {
-    font-size: 0.75rem;
-    font-weight: 200;
-    color: rgba(253,252,250,0.6);
-  }
-
-  /* PROCESS */
-  #process {
-    padding: 130px 60px;
-    background: var(--charcoal);
-  }
-
-  .process-steps {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-    margin-top: 70px;
-    position: relative;
-  }
-  .process-steps::before {
-    content: '';
-    position: absolute;
-    top: 28px; left: 10%; right: 10%;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--gold), transparent);
-    z-index: 0;
-  }
-
-  .process-step {
-    padding: 0 30px;
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.6s ease;
-  }
+  #process { padding: 130px 60px; background: var(--charcoal); }
+  .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 70px; position: relative; }
+  .process-steps::before { content: ''; position: absolute; top: 28px; left: 10%; right: 10%; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); z-index: 0; }
+  .process-step { padding: 0 30px; position: relative; z-index: 1; text-align: center; opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
   .process-step.visible { opacity: 1; transform: translateY(0); }
   .process-step:nth-child(2) { transition-delay: 0.15s; }
   .process-step:nth-child(3) { transition-delay: 0.3s; }
   .process-step:nth-child(4) { transition-delay: 0.45s; }
+  .step-dot { width: 56px; height: 56px; border-radius: 50%; background: var(--dark); border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; margin: 0 auto 28px; position: relative; z-index: 2; }
+  .step-num { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--gold); }
+  .step-title { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 400; margin-bottom: 14px; }
+  .step-desc { font-size: 0.8rem; font-weight: 200; line-height: 1.8; color: rgba(253,252,250,0.5); }
 
-  .step-dot {
-    width: 56px; height: 56px;
-    border-radius: 50%;
-    background: var(--dark);
-    border: 1px solid var(--gold);
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 28px;
-    position: relative;
-    z-index: 2;
-  }
-  .step-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.3rem;
-    color: var(--gold);
-  }
-  .step-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.3rem;
-    font-weight: 400;
-    margin-bottom: 14px;
-  }
-  .step-desc {
-    font-size: 0.8rem;
-    font-weight: 200;
-    line-height: 1.8;
-    color: rgba(253,252,250,0.5);
-  }
-
-  /* TESTIMONIALS */
-  #testimonials {
-    padding: 130px 60px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .testimonials-inner {
-    max-width: 900px;
-    margin: 70px auto 0;
-    position: relative;
-  }
-
-  .testimonial-slide {
-    display: none;
-    animation: fadeIn 0.6s ease;
-  }
+  #testimonials { padding: 130px 60px; position: relative; overflow: hidden; }
+  .testimonials-inner { max-width: 900px; margin: 70px auto 0; position: relative; }
+  .testimonial-slide { display: none; animation: fadeIn 0.6s ease; }
   .testimonial-slide.active { display: block; }
-
-  .quote-mark {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 8rem;
-    color: var(--gold);
-    opacity: 0.15;
-    line-height: 0.7;
-    margin-bottom: 20px;
-    display: block;
-  }
-
-  .testimonial-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-    font-weight: 300;
-    font-style: italic;
-    line-height: 1.6;
-    color: rgba(253,252,250,0.85);
-    margin-bottom: 40px;
-  }
-
-  .testimonial-author {
-    display: flex; align-items: center; gap: 20px;
-  }
-  .author-avatar {
-    width: 52px; height: 52px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--gold);
-    filter: grayscale(20%);
-  }
-  .author-name {
-    font-size: 0.85rem;
-    font-weight: 400;
-    margin-bottom: 4px;
-  }
-  .author-role {
-    font-size: 0.7rem;
-    font-weight: 200;
-    letter-spacing: 0.1em;
-    color: var(--warm-gray);
-  }
-
-  .testimonial-controls {
-    display: flex; gap: 12px;
-    margin-top: 50px;
-    justify-content: center;
-  }
-  .t-btn {
-    width: 44px; height: 44px;
-    border-radius: 50%;
-    border: 1px solid rgba(201,169,110,0.3);
-    background: transparent;
-    color: var(--gold);
-    cursor: pointer;
-    font-size: 1rem;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.3s ease;
-    font-family: 'Outfit', sans-serif;
-  }
+  .quote-mark { font-family: 'Cormorant Garamond', serif; font-size: 8rem; color: var(--gold); opacity: 0.15; line-height: 0.7; margin-bottom: 20px; display: block; }
+  .testimonial-text { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.3rem, 2.5vw, 1.8rem); font-weight: 300; font-style: italic; line-height: 1.6; color: rgba(253,252,250,0.85); margin-bottom: 40px; }
+  .testimonial-author { display: flex; align-items: center; gap: 20px; }
+  .author-avatar { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); filter: grayscale(20%); }
+  .author-name { font-size: 0.85rem; font-weight: 400; margin-bottom: 4px; }
+  .author-role { font-size: 0.7rem; font-weight: 200; letter-spacing: 0.1em; color: var(--warm-gray); }
+  .testimonial-controls { display: flex; gap: 12px; margin-top: 50px; justify-content: center; }
+  .t-btn { width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(201,169,110,0.3); background: transparent; color: var(--gold); cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; font-family: 'Outfit', sans-serif; }
   .t-btn:hover { background: var(--gold); color: var(--dark); border-color: var(--gold); }
-
-  .t-dots {
-    display: flex; align-items: center; gap: 10px;
-    margin-top: 30px;
-    justify-content: center;
-  }
-  .t-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: rgba(201,169,110,0.25);
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
+  .t-dots { display: flex; align-items: center; gap: 10px; margin-top: 30px; justify-content: center; }
+  .t-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(201,169,110,0.25); cursor: pointer; transition: all 0.3s ease; }
   .t-dot.active { background: var(--gold); width: 24px; border-radius: 3px; }
 
-  /* CTA */
-  #cta {
-    padding: 130px 60px;
-    background: var(--charcoal);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
-  }
-
-  .cta-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 300;
-    line-height: 1.15;
-  }
+  #cta { padding: 130px 60px; background: var(--charcoal); display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .cta-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; line-height: 1.15; }
   .cta-title em { font-style: italic; color: var(--gold); }
-
   .contact-form { display: flex; flex-direction: column; gap: 16px; }
-
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-  .form-field {
-    display: flex; flex-direction: column; gap: 8px;
-  }
-
-  .form-field label {
-    font-size: 0.62rem;
-    font-weight: 300;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--warm-gray);
-  }
-
-  .form-field input, .form-field select, .form-field textarea {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--white);
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 200;
-    padding: 14px 18px;
-    outline: none;
-    transition: border-color 0.3s ease;
-    resize: none;
-    -webkit-appearance: none;
-  }
-  .form-field input:focus, .form-field select, .form-field textarea:focus {
-    border-color: var(--gold);
-  }
+  .form-field { display: flex; flex-direction: column; gap: 8px; }
+  .form-field label { font-size: 0.62rem; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; color: var(--warm-gray); }
+  .form-field input, .form-field select, .form-field textarea { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: var(--white); font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 200; padding: 14px 18px; outline: none; transition: border-color 0.3s ease; resize: none; -webkit-appearance: none; }
+  .form-field input:focus, .form-field textarea:focus { border-color: var(--gold); }
   .form-field select option { background: var(--charcoal); }
-
-  .btn-submit {
-    background: var(--gold);
-    color: var(--dark);
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    padding: 18px 40px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    align-self: flex-start;
-    margin-top: 8px;
-  }
+  .btn-submit { background: var(--gold); color: var(--dark); font-family: 'Outfit', sans-serif; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; padding: 18px 40px; border: none; cursor: pointer; transition: all 0.3s ease; align-self: flex-start; margin-top: 8px; }
   .btn-submit:hover { background: var(--gold-light); transform: translateY(-2px); }
 
-  /* FOOTER */
-  footer {
-    padding: 60px 60px 40px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr 1fr;
-    gap: 60px;
-  }
-
+  footer { padding: 60px 60px 40px; border-top: 1px solid rgba(255,255,255,0.06); display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 60px; }
   .footer-brand .nav-logo { display: block; margin-bottom: 18px; }
-  .footer-brand p {
-    font-size: 0.8rem;
-    font-weight: 200;
-    line-height: 1.8;
-    color: rgba(253,252,250,0.4);
-    max-width: 260px;
-    margin-bottom: 24px;
-  }
+  .footer-brand p { font-size: 0.8rem; font-weight: 200; line-height: 1.8; color: rgba(253,252,250,0.4); max-width: 260px; margin-bottom: 24px; }
   .social-links { display: flex; gap: 12px; }
-  .social-link {
-    width: 36px; height: 36px;
-    border: 1px solid rgba(255,255,255,0.1);
-    display: flex; align-items: center; justify-content: center;
-    color: rgba(253,252,250,0.5);
-    text-decoration: none;
-    font-size: 0.8rem;
-    transition: all 0.3s ease;
-  }
+  .social-link { width: 36px; height: 36px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: rgba(253,252,250,0.5); text-decoration: none; font-size: 0.8rem; transition: all 0.3s ease; }
   .social-link:hover { border-color: var(--gold); color: var(--gold); }
-
-  .footer-col h4 {
-    font-size: 0.62rem;
-    font-weight: 400;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--warm-gray);
-    margin-bottom: 22px;
-  }
+  .footer-col h4 { font-size: 0.62rem; font-weight: 400; letter-spacing: 0.25em; text-transform: uppercase; color: var(--warm-gray); margin-bottom: 22px; }
   .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-  .footer-col a {
-    font-size: 0.8rem;
-    font-weight: 200;
-    color: rgba(253,252,250,0.5);
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
+  .footer-col a { font-size: 0.8rem; font-weight: 200; color: rgba(253,252,250,0.5); text-decoration: none; transition: color 0.3s ease; }
   .footer-col a:hover { color: var(--white); }
+  .footer-bottom { padding: 24px 60px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; }
+  .footer-bottom p { font-size: 0.72rem; font-weight: 200; color: rgba(253,252,250,0.3); }
 
-  .footer-bottom {
-    padding: 24px 60px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .footer-bottom p {
-    font-size: 0.72rem;
-    font-weight: 200;
-    color: rgba(253,252,250,0.3);
-  }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes scrollPulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  @keyframes scrollPulse {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 1; }
-  }
-
-  .reveal {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-  }
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
   .reveal-delay-1 { transition-delay: 0.15s; }
   .reveal-delay-2 { transition-delay: 0.3s; }
   .reveal-delay-3 { transition-delay: 0.45s; }
 
-  /* MOBILE */
   @media (max-width: 900px) {
     nav { padding: 20px 24px; }
     .nav-links { display: none; }
@@ -866,18 +193,15 @@
     .portfolio-item { grid-column: span 1 !important; grid-row: span 1 !important; }
     footer { grid-template-columns: 1fr; gap: 40px; padding: 50px 24px 30px; }
     .footer-bottom { flex-direction: column; gap: 12px; text-align: center; padding: 20px 24px; }
-    .services-header { flex-direction: column; align-items: flex-start; gap: 24px; }
-    .portfolio-header { flex-direction: column; align-items: flex-start; gap: 24px; }
+    .services-header, .portfolio-header { flex-direction: column; align-items: flex-start; gap: 24px; }
   }
 </style>
 </head>
 <body>
 
-<!-- CURSOR -->
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
-<!-- NAV -->
 <nav id="navbar">
   <a href="#" class="nav-logo">FOR<span>M</span>A</a>
   <ul class="nav-links">
@@ -890,147 +214,89 @@
   <a href="#cta" class="nav-cta">Start a Project</a>
 </nav>
 
-<!-- HERO -->
 <section id="hero">
   <canvas id="hero-canvas"></canvas>
   <div class="hero-content">
-    <div class="hero-tag">Architecture & Design Studio</div>
-    <h1 class="hero-title">
-      Spaces that<br><em>inspire</em> the<br>human spirit
-    </h1>
+    <div class="hero-tag">Architecture &amp; Design Studio</div>
+    <h1 class="hero-title">Spaces that<br><em>inspire</em> the<br>human spirit</h1>
     <p class="hero-sub">We craft timeless architectural experiences — from concept to completion — that transform how people live, work, and feel.</p>
     <div class="hero-btns">
       <a href="#portfolio" class="btn-primary">View Our Work</a>
-      <a href="#about" class="btn-ghost">
-        Our Story
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
+      <a href="#about" class="btn-ghost">Our Story <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
   </div>
-  <div class="hero-scroll">
-    <div class="scroll-line"></div>
-    <span>Scroll</span>
-  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div><span>Scroll</span></div>
 </section>
 
-<!-- STATS -->
 <div class="stats-bar">
-  <div class="stat-item">
-    <div class="stat-num" data-target="240">0</div>
-    <div class="stat-label">Projects Completed</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num" data-target="18">0</div>
-    <div class="stat-label">Years of Excellence</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num" data-target="32">0</div>
-    <div class="stat-label">Design Awards</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num" data-target="14">0</div>
-    <div class="stat-label">Countries Worldwide</div>
-  </div>
+  <div class="stat-item"><div class="stat-num" data-target="240">0</div><div class="stat-label">Projects Completed</div></div>
+  <div class="stat-item"><div class="stat-num" data-target="18">0</div><div class="stat-label">Years of Excellence</div></div>
+  <div class="stat-item"><div class="stat-num" data-target="32">0</div><div class="stat-label">Design Awards</div></div>
+  <div class="stat-item"><div class="stat-num" data-target="14">0</div><div class="stat-label">Countries Worldwide</div></div>
 </div>
 
-<!-- ABOUT -->
 <section id="about">
   <div>
     <div class="section-label reveal">Our Philosophy</div>
     <h2 class="section-title reveal reveal-delay-1">Where <em>function</em><br>meets beauty</h2>
     <p class="section-body reveal reveal-delay-2">FORMA was founded on the belief that architecture is not just about buildings — it's about creating experiences. We approach every project with a deep curiosity about how space influences emotion, behavior, and wellbeing.</p>
     <p class="section-body reveal reveal-delay-2">Our interdisciplinary team of architects, interior designers, and planners collaborate closely with each client to translate vision into reality — with precision, craft, and artistry.</p>
-    <a href="#cta" class="btn-primary reveal reveal-delay-3" style="margin-top: 16px; display: inline-block; text-decoration: none;">Work With Us</a>
+    <a href="#cta" class="btn-primary reveal reveal-delay-3" style="margin-top:16px;display:inline-block;text-decoration:none;">Work With Us</a>
   </div>
   <div class="about-visual reveal">
-    <img class="about-img-main"
-      src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80"
-      alt="Modern architectural interior"
-      loading="lazy">
-    <img class="about-img-accent"
-      src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=500&q=80"
-      alt="Design detail"
-      loading="lazy">
-    <div class="about-badge">
-      <span class="num">18+</span>
-      <span class="lbl">Years<br>Experience</span>
-    </div>
+    <img class="about-img-main" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80" alt="Modern architectural interior" loading="lazy">
+    <img class="about-img-accent" src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=500&q=80" alt="Design detail" loading="lazy">
+    <div class="about-badge"><span class="num">18+</span><span class="lbl">Years<br>Experience</span></div>
   </div>
 </section>
 
-<!-- SERVICES -->
 <section id="services">
   <div class="services-header">
     <div>
       <div class="section-label reveal">What We Do</div>
       <h2 class="section-title reveal reveal-delay-1">Our <em>Services</em></h2>
     </div>
-    <a href="#portfolio" class="btn-ghost reveal" style="color: rgba(253,252,250,0.6);">
-      See All Projects
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </a>
+    <a href="#portfolio" class="btn-ghost reveal" style="color:rgba(253,252,250,0.6);">See All Projects <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
   </div>
   <div class="services-grid">
     <div class="service-card reveal">
       <div class="service-num">01</div>
-      <svg class="service-icon" viewBox="0 0 36 36" fill="none" stroke="#C9A96E" stroke-width="1.5">
-        <rect x="4" y="4" width="28" height="28" rx="1"/>
-        <path d="M4 14h28M14 4v28"/>
-      </svg>
+      <svg class="service-icon" viewBox="0 0 36 36" fill="none" stroke="#C9A96E" stroke-width="1.5"><rect x="4" y="4" width="28" height="28" rx="1"/><path d="M4 14h28M14 4v28"/></svg>
       <div class="service-name">Architectural Design</div>
       <p class="service-desc">From residential masterpieces to landmark commercial developments — we design structures that stand the test of time.</p>
       <a href="#cta" class="service-link">Enquire →</a>
     </div>
     <div class="service-card reveal reveal-delay-1">
       <div class="service-num">02</div>
-      <svg class="service-icon" viewBox="0 0 36 36" fill="none" stroke="#C9A96E" stroke-width="1.5">
-        <path d="M6 30V14l12-8 12 8v16H6z"/>
-        <rect x="14" y="20" width="8" height="10"/>
-      </svg>
+      <svg class="service-icon" viewBox="0 0 36 36" fill="none" stroke="#C9A96E" stroke-width="1.5"><path d="M6 30V14l12-8 12 8v16H6z"/><rect x="14" y="20" width="8" height="10"/></svg>
       <div class="service-name">Interior Design</div>
       <p class="service-desc">Curated interiors that marry aesthetics with function — every material, texture, and light source considered.</p>
       <a href="#cta" class="service-link">Enquire →</a>
     </div>
     <div class="service-card reveal reveal-delay-2">
       <div class="service-num">03</div>
-      <svg class="service-icon" viewBox="0 0 36 36" fill="none" stroke="#C9A96E" stroke-width="1.5">
-        <circle cx="18" cy="18" r="12"/>
-        <path d="M18 6v12l8 4"/>
-      </svg>
+      <svg class="service-icon" viewBox="0 0 36 36" fill="none" stroke="#C9A96E" stroke-width="1.5"><circle cx="18" cy="18" r="12"/><path d="M18 6v12l8 4"/></svg>
       <div class="service-name">Urban Planning</div>
       <p class="service-desc">Thoughtful master planning for mixed-use districts, communities, and public spaces that foster connection.</p>
       <a href="#cta" class="service-link">Enquire →</a>
     </div>
     <div class="service-card reveal">
       <div class="service-num">04</div>
-      <svg class="service-icon" viewBox="0 0 36 36" fill="none" stroke="#C9A96E" stroke-width="1.5">
-        <path d="M4 28L18 8l14 20H4z"/>
-        <path d="M14 28v-8h8v8"/>
-      </svg>
+      <svg class="service-icon" viewBox="0 0 36 36" fill="none" stroke="#C9A96E" stroke-width="1.5"><path d="M4 28L18 8l14 20H4z"/><path d="M14 28v-8h8v8"/></svg>
       <div class="service-name">Landscape Architecture</div>
       <p class="service-desc">Outdoor environments that harmonize nature with human habitation — gardens, courtyards, and public realms.</p>
       <a href="#cta" class="service-link">Enquire →</a>
     </div>
     <div class="service-card reveal reveal-delay-1">
       <div class="service-num">05</div>
-      <svg class="service-icon" viewBox="0 0 36 36" fill="none" stroke="#C9A96E" stroke-width="1.5">
-        <rect x="4" y="8" width="28" height="20" rx="1"/>
-        <path d="M4 14h28M12 8v20M24 8v20"/>
-      </svg>
+      <svg class="service-icon" viewBox="0 0 36 36" fill="none" stroke="#C9A96E" stroke-width="1.5"><rect x="4" y="8" width="28" height="20" rx="1"/><path d="M4 14h28M12 8v20M24 8v20"/></svg>
       <div class="service-name">Project Management</div>
       <p class="service-desc">End-to-end delivery from planning permission through construction completion — transparent and on schedule.</p>
       <a href="#cta" class="service-link">Enquire →</a>
     </div>
     <div class="service-card reveal reveal-delay-2">
       <div class="service-num">06</div>
-      <svg class="service-icon" viewBox="0 0 36 36" fill="none" stroke="#C9A96E" stroke-width="1.5">
-        <path d="M8 28V16l10-10 10 10v12H8z"/>
-        <circle cx="18" cy="22" r="4"/>
-      </svg>
+      <svg class="service-icon" viewBox="0 0 36 36" fill="none" stroke="#C9A96E" stroke-width="1.5"><path d="M8 28V16l10-10 10 10v12H8z"/><circle cx="18" cy="22" r="4"/></svg>
       <div class="service-name">Sustainability Consulting</div>
       <p class="service-desc">LEED-certified strategies, passive design principles, and biophilic elements for a better built environment.</p>
       <a href="#cta" class="service-link">Enquire →</a>
@@ -1038,7 +304,6 @@
   </div>
 </section>
 
-<!-- PORTFOLIO -->
 <section id="portfolio">
   <div class="portfolio-header">
     <div>
@@ -1054,108 +319,48 @@
   </div>
   <div class="portfolio-grid">
     <div class="portfolio-item" data-category="residential">
-      <img class="portfolio-img"
-        src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=900&q=80"
-        alt="Villa Serenata"
-        loading="lazy">
-      <div class="portfolio-overlay">
-        <div class="portfolio-cat">Residential</div>
-        <div class="portfolio-name">Villa Serenata</div>
-        <div class="portfolio-loc">Amalfi Coast, Italy</div>
-      </div>
+      <img class="portfolio-img" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=900&q=80" alt="Villa Serenata" loading="lazy">
+      <div class="portfolio-overlay"><div class="portfolio-cat">Residential</div><div class="portfolio-name">Villa Serenata</div><div class="portfolio-loc">Amalfi Coast, Italy</div></div>
     </div>
     <div class="portfolio-item" data-category="commercial">
-      <img class="portfolio-img"
-        src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=700&q=80"
-        alt="Meridian Tower"
-        loading="lazy">
-      <div class="portfolio-overlay">
-        <div class="portfolio-cat">Commercial</div>
-        <div class="portfolio-name">Meridian Tower</div>
-        <div class="portfolio-loc">Dubai, UAE</div>
-      </div>
+      <img class="portfolio-img" src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=700&q=80" alt="Meridian Tower" loading="lazy">
+      <div class="portfolio-overlay"><div class="portfolio-cat">Commercial</div><div class="portfolio-name">Meridian Tower</div><div class="portfolio-loc">Dubai, UAE</div></div>
     </div>
     <div class="portfolio-item" data-category="hospitality">
-      <img class="portfolio-img"
-        src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=700&q=80"
-        alt="The Croft Hotel"
-        loading="lazy">
-      <div class="portfolio-overlay">
-        <div class="portfolio-cat">Hospitality</div>
-        <div class="portfolio-name">The Croft Hotel</div>
-        <div class="portfolio-loc">Kyoto, Japan</div>
-      </div>
+      <img class="portfolio-img" src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=700&q=80" alt="The Croft Hotel" loading="lazy">
+      <div class="portfolio-overlay"><div class="portfolio-cat">Hospitality</div><div class="portfolio-name">The Croft Hotel</div><div class="portfolio-loc">Kyoto, Japan</div></div>
     </div>
     <div class="portfolio-item" data-category="residential">
-      <img class="portfolio-img"
-        src="https://images.unsplash.com/photo-1600210492493-0946911123ea?w=600&q=80"
-        alt="Casa del Lago"
-        loading="lazy">
-      <div class="portfolio-overlay">
-        <div class="portfolio-cat">Residential</div>
-        <div class="portfolio-name">Casa del Lago</div>
-        <div class="portfolio-loc">Zürich, Switzerland</div>
-      </div>
+      <img class="portfolio-img" src="https://images.unsplash.com/photo-1600210492493-0946911123ea?w=600&q=80" alt="Casa del Lago" loading="lazy">
+      <div class="portfolio-overlay"><div class="portfolio-cat">Residential</div><div class="portfolio-name">Casa del Lago</div><div class="portfolio-loc">Zürich, Switzerland</div></div>
     </div>
     <div class="portfolio-item" data-category="commercial">
-      <img class="portfolio-img"
-        src="https://images.unsplash.com/photo-1577495508048-b635879837f1?w=600&q=80"
-        alt="Nova Plaza"
-        loading="lazy">
-      <div class="portfolio-overlay">
-        <div class="portfolio-cat">Commercial</div>
-        <div class="portfolio-name">Nova Plaza</div>
-        <div class="portfolio-loc">London, UK</div>
-      </div>
+      <img class="portfolio-img" src="https://images.unsplash.com/photo-1577495508048-b635879837f1?w=600&q=80" alt="Nova Plaza" loading="lazy">
+      <div class="portfolio-overlay"><div class="portfolio-cat">Commercial</div><div class="portfolio-name">Nova Plaza</div><div class="portfolio-loc">London, UK</div></div>
     </div>
     <div class="portfolio-item" data-category="hospitality">
-      <img class="portfolio-img"
-        src="https://images.unsplash.com/photo-1610641818989-c2051b5e2cfd?w=600&q=80"
-        alt="Morrisson Resort"
-        loading="lazy">
-      <div class="portfolio-overlay">
-        <div class="portfolio-cat">Hospitality</div>
-        <div class="portfolio-name">Morrisson Resort</div>
-        <div class="portfolio-loc">Santorini, Greece</div>
-      </div>
+      <img class="portfolio-img" src="https://images.unsplash.com/photo-1610641818989-c2051b5e2cfd?w=600&q=80" alt="Morrisson Resort" loading="lazy">
+      <div class="portfolio-overlay"><div class="portfolio-cat">Hospitality</div><div class="portfolio-name">Morrisson Resort</div><div class="portfolio-loc">Santorini, Greece</div></div>
     </div>
   </div>
 </section>
 
-<!-- PROCESS -->
 <section id="process">
-  <div style="text-align: center; max-width: 600px; margin: 0 auto;">
-    <div class="section-label reveal" style="justify-content: center;">How We Work</div>
+  <div style="text-align:center;max-width:600px;margin:0 auto;">
+    <div class="section-label reveal" style="justify-content:center;">How We Work</div>
     <h2 class="section-title reveal reveal-delay-1">A refined <em>process</em><br>every time</h2>
   </div>
   <div class="process-steps">
-    <div class="process-step">
-      <div class="step-dot"><span class="step-num">I</span></div>
-      <div class="step-title">Discovery</div>
-      <p class="step-desc">We listen deeply to understand your vision, lifestyle, and aspirations — immersing ourselves in your world.</p>
-    </div>
-    <div class="process-step">
-      <div class="step-dot"><span class="step-num">II</span></div>
-      <div class="step-title">Concept</div>
-      <p class="step-desc">Translating brief into bold ideas — sketches, mood boards, and spatial studies that set the creative direction.</p>
-    </div>
-    <div class="process-step">
-      <div class="step-dot"><span class="step-num">III</span></div>
-      <div class="step-title">Development</div>
-      <p class="step-desc">Technical drawings, material selection, and engineering coordination — every detail resolved with precision.</p>
-    </div>
-    <div class="process-step">
-      <div class="step-dot"><span class="step-num">IV</span></div>
-      <div class="step-title">Delivery</div>
-      <p class="step-desc">On-site oversight from ground-break to handover — ensuring the vision is realized exactly as imagined.</p>
-    </div>
+    <div class="process-step"><div class="step-dot"><span class="step-num">I</span></div><div class="step-title">Discovery</div><p class="step-desc">We listen deeply to understand your vision, lifestyle, and aspirations — immersing ourselves in your world.</p></div>
+    <div class="process-step"><div class="step-dot"><span class="step-num">II</span></div><div class="step-title">Concept</div><p class="step-desc">Translating brief into bold ideas — sketches, mood boards, and spatial studies that set the creative direction.</p></div>
+    <div class="process-step"><div class="step-dot"><span class="step-num">III</span></div><div class="step-title">Development</div><p class="step-desc">Technical drawings, material selection, and engineering coordination — every detail resolved with precision.</p></div>
+    <div class="process-step"><div class="step-dot"><span class="step-num">IV</span></div><div class="step-title">Delivery</div><p class="step-desc">On-site oversight from ground-break to handover — ensuring the vision is realized exactly as imagined.</p></div>
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
 <section id="testimonials">
-  <div style="text-align: center;">
-    <div class="section-label reveal" style="justify-content: center;">Client Stories</div>
+  <div style="text-align:center;">
+    <div class="section-label reveal" style="justify-content:center;">Client Stories</div>
     <h2 class="section-title reveal reveal-delay-1">What our <em>clients</em> say</h2>
   </div>
   <div class="testimonials-inner">
@@ -1163,39 +368,24 @@
       <span class="quote-mark">"</span>
       <p class="testimonial-text">FORMA transformed our brief into something we couldn't have imagined. The attention to light, materiality, and proportion is extraordinary. Our home feels like a work of art — and it functions perfectly.</p>
       <div class="testimonial-author">
-        <img class="author-avatar"
-          src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80"
-          alt="Sophie Andersson">
-        <div>
-          <div class="author-name">Sophie Andersson</div>
-          <div class="author-role">Residential Client — Stockholm Villa</div>
-        </div>
+        <img class="author-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="Sophie Andersson">
+        <div><div class="author-name">Sophie Andersson</div><div class="author-role">Residential Client — Stockholm Villa</div></div>
       </div>
     </div>
     <div class="testimonial-slide">
       <span class="quote-mark">"</span>
       <p class="testimonial-text">Our flagship store design generated more press coverage than any campaign we've run. FORMA understood our brand at a level that surprised us — they created a space that tells our story.</p>
       <div class="testimonial-author">
-        <img class="author-avatar"
-          src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80"
-          alt="Marcus Chen">
-        <div>
-          <div class="author-name">Marcus Chen</div>
-          <div class="author-role">CEO — Luma Lifestyle Brands</div>
-        </div>
+        <img class="author-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="Marcus Chen">
+        <div><div class="author-name">Marcus Chen</div><div class="author-role">CEO — Luma Lifestyle Brands</div></div>
       </div>
     </div>
     <div class="testimonial-slide">
       <span class="quote-mark">"</span>
       <p class="testimonial-text">On budget, ahead of schedule, and more beautiful than we imagined. FORMA's process was collaborative, transparent, and genuinely enjoyable. We're planning our second property with them now.</p>
       <div class="testimonial-author">
-        <img class="author-avatar"
-          src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80"
-          alt="Isabelle Laurent">
-        <div>
-          <div class="author-name">Isabelle Laurent</div>
-          <div class="author-role">Property Developer — Paris</div>
-        </div>
+        <img class="author-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="Isabelle Laurent">
+        <div><div class="author-name">Isabelle Laurent</div><div class="author-role">Property Developer — Paris</div></div>
       </div>
     </div>
     <div class="testimonial-controls">
@@ -1210,43 +400,33 @@
   </div>
 </section>
 
-<!-- CTA / CONTACT -->
 <section id="cta">
   <div>
     <div class="section-label reveal">Get In Touch</div>
     <h2 class="cta-title reveal reveal-delay-1">Let's build<br>something <em>extraordinary</em><br>together</h2>
-    <p class="section-body reveal reveal-delay-2" style="margin-top: 24px; max-width: 380px;">Whether you have a detailed brief or simply a vision — we'd love to hear about your project.</p>
-    <div style="margin-top: 40px; display: flex; flex-direction: column; gap: 18px;" class="reveal reveal-delay-2">
-      <div style="display: flex; gap: 14px; align-items: center;">
-        <div style="width: 36px; height: 36px; border: 1px solid rgba(201,169,110,0.3); display: flex; align-items: center; justify-content: center;">
+    <p class="section-body reveal reveal-delay-2" style="margin-top:24px;max-width:380px;">Whether you have a detailed brief or simply a vision — we'd love to hear about your project.</p>
+    <div style="margin-top:40px;display:flex;flex-direction:column;gap:18px;" class="reveal reveal-delay-2">
+      <div style="display:flex;gap:14px;align-items:center;">
+        <div style="width:36px;height:36px;border:1px solid rgba(201,169,110,0.3);display:flex;align-items:center;justify-content:center;">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#C9A96E" stroke-width="1.5"><path d="M2 4l6 5 6-5M2 4h12v9H2z"/></svg>
         </div>
-        <span style="font-size: 0.85rem; font-weight: 200; color: rgba(253,252,250,0.6);"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c5ada0a9a9aa85a3aab7a8a4e8b6b1b0a1acaaeba6aaa8">[email&#160;protected]</a></span>
+        <span style="font-size:0.85rem;font-weight:200;color:rgba(253,252,250,0.6);">hello@forma-studio.com</span>
       </div>
-      <div style="display: flex; gap: 14px; align-items: center;">
-        <div style="width: 36px; height: 36px; border: 1px solid rgba(201,169,110,0.3); display: flex; align-items: center; justify-content: center;">
+      <div style="display:flex;gap:14px;align-items:center;">
+        <div style="width:36px;height:36px;border:1px solid rgba(201,169,110,0.3);display:flex;align-items:center;justify-content:center;">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#C9A96E" stroke-width="1.5"><path d="M8 1C5.2 1 3 3.2 3 6c0 4 5 9 5 9s5-5 5-9c0-2.8-2.2-5-5-5zm0 7a2 2 0 110-4 2 2 0 010 4z"/></svg>
         </div>
-        <span style="font-size: 0.85rem; font-weight: 200; color: rgba(253,252,250,0.6);">12 Savile Row, Mayfair, London</span>
+        <span style="font-size:0.85rem;font-weight:200;color:rgba(253,252,250,0.6);">12 Savile Row, Mayfair, London</span>
       </div>
     </div>
   </div>
   <div class="reveal reveal-delay-1">
     <div class="contact-form">
       <div class="form-row">
-        <div class="form-field">
-          <label>First Name</label>
-          <input type="text" placeholder="James">
-        </div>
-        <div class="form-field">
-          <label>Last Name</label>
-          <input type="text" placeholder="Morrison">
-        </div>
+        <div class="form-field"><label>First Name</label><input type="text" placeholder="James"></div>
+        <div class="form-field"><label>Last Name</label><input type="text" placeholder="Morrison"></div>
       </div>
-      <div class="form-field">
-        <label>Email Address</label>
-        <input type="email" placeholder="james@example.com">
-      </div>
+      <div class="form-field"><label>Email Address</label><input type="email" placeholder="james@example.com"></div>
       <div class="form-field">
         <label>Project Type</label>
         <select>
@@ -1259,16 +439,12 @@
           <option>Sustainability Consulting</option>
         </select>
       </div>
-      <div class="form-field">
-        <label>Tell Us About Your Project</label>
-        <textarea rows="4" placeholder="Briefly describe your vision, timeline, and budget..."></textarea>
-      </div>
+      <div class="form-field"><label>Tell Us About Your Project</label><textarea rows="4" placeholder="Briefly describe your vision, timeline, and budget..."></textarea></div>
       <button class="btn-submit" onclick="handleSubmit(this)">Send Enquiry</button>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-brand">
     <a href="#" class="nav-logo">FOR<span>M</span>A</a>
@@ -1281,44 +457,25 @@
   </div>
   <div class="footer-col">
     <h4>Services</h4>
-    <ul>
-      <li><a href="#services">Architecture</a></li>
-      <li><a href="#services">Interiors</a></li>
-      <li><a href="#services">Planning</a></li>
-      <li><a href="#services">Landscape</a></li>
-      <li><a href="#services">Sustainability</a></li>
-    </ul>
+    <ul><li><a href="#services">Architecture</a></li><li><a href="#services">Interiors</a></li><li><a href="#services">Planning</a></li><li><a href="#services">Landscape</a></li><li><a href="#services">Sustainability</a></li></ul>
   </div>
   <div class="footer-col">
     <h4>Studio</h4>
-    <ul>
-      <li><a href="#about">About</a></li>
-      <li><a href="#portfolio">Projects</a></li>
-      <li><a href="#process">Process</a></li>
-      <li><a href="#testimonials">Clients</a></li>
-      <li><a href="#">Careers</a></li>
-    </ul>
+    <ul><li><a href="#about">About</a></li><li><a href="#portfolio">Projects</a></li><li><a href="#process">Process</a></li><li><a href="#testimonials">Clients</a></li><li><a href="#">Careers</a></li></ul>
   </div>
   <div class="footer-col">
     <h4>Contact</h4>
-    <ul>
-      <li><a href="#cta">Start a Project</a></li>
-      <li><a href="#">Press Enquiries</a></li>
-      <li><a href="#"><span class="__cf_email__" data-cfemail="244c4148484b64424b56494509575051404d4b0a474b49">[email&#160;protected]</span></a></li>
-      <li><a href="#">London Office</a></li>
-    </ul>
+    <ul><li><a href="#cta">Start a Project</a></li><li><a href="#">Press Enquiries</a></li><li><a href="#">hello@forma-studio.com</a></li><li><a href="#">London Office</a></li></ul>
   </div>
 </footer>
 <div class="footer-bottom">
   <p>© 2024 FORMA Architecture Studio. All rights reserved.</p>
-  <p style="color: rgba(253,252,250,0.2);">Designed with intention.</p>
+  <p style="color:rgba(253,252,250,0.2);">Designed with intention.</p>
 </div>
 
-<!-- THREE.JS CDN -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-// ─── CURSOR ───
+// CURSOR
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursorRing');
 let mx = 0, my = 0, rx = 0, ry = 0;
@@ -1335,199 +492,81 @@ document.querySelectorAll('a, button, .service-card, .portfolio-item').forEach(e
   el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; ring.style.width = '36px'; ring.style.height = '36px'; });
 });
 
-// ─── NAV SCROLL ───
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 60);
-});
+// NAV
+window.addEventListener('scroll', () => { document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60); });
 
-// ─── THREE.JS HERO ───
+// THREE.JS HERO
 (function() {
   const canvas = document.getElementById('hero-canvas');
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
   renderer.setClearColor(0x000000, 0);
-
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(55, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
   camera.position.set(0, 0, 22);
-
-  // Lighting
-  const ambient = new THREE.AmbientLight(0xffffff, 0.2);
-  scene.add(ambient);
-  const dirLight = new THREE.DirectionalLight(0xC9A96E, 1.2);
-  dirLight.position.set(5, 10, 8);
-  scene.add(dirLight);
-  const rimLight = new THREE.DirectionalLight(0x4060A0, 0.4);
-  rimLight.position.set(-8, -5, -5);
-  scene.add(rimLight);
-  const pointLight = new THREE.PointLight(0xC9A96E, 0.8, 40);
-  pointLight.position.set(-6, 6, 10);
-  scene.add(pointLight);
-
-  // Gold material
-  const goldMat = new THREE.MeshStandardMaterial({
-    color: 0xC9A96E, metalness: 0.9, roughness: 0.25,
-    wireframe: false
-  });
-  const wireMat = new THREE.MeshStandardMaterial({
-    color: 0xC9A96E, metalness: 0.5, roughness: 0.4,
-    wireframe: true, opacity: 0.12, transparent: true
-  });
-  const darkMat = new THREE.MeshStandardMaterial({
-    color: 0x1A1A1A, metalness: 0.8, roughness: 0.3
-  });
-
-  // Building group
-  const group = new THREE.Group();
-  scene.add(group);
-
-  // Abstract architectural tower
-  function makeBox(w, h, d, mat, x, y, z) {
-    const g = new THREE.BoxGeometry(w, h, d);
-    const m = new THREE.Mesh(g, mat);
-    m.position.set(x, y, z);
-    return m;
-  }
-
-  // Main tower
-  group.add(makeBox(3, 12, 3, darkMat, 0, 0, 0));
-  // Gold accent panels
-  group.add(makeBox(3.1, 0.12, 3.1, goldMat, 0, -5.5, 0));
-  group.add(makeBox(3.1, 0.12, 3.1, goldMat, 0, -2, 0));
-  group.add(makeBox(3.1, 0.12, 3.1, goldMat, 0, 1.5, 0));
-  group.add(makeBox(3.1, 0.12, 3.1, goldMat, 0, 5, 0));
-  // Top finial
-  group.add(makeBox(0.5, 2, 0.5, goldMat, 0, 7, 0));
-
-  // Side wing L
-  group.add(makeBox(2, 8, 2, darkMat, -3.5, -2, 0));
-  group.add(makeBox(2.1, 0.1, 2.1, goldMat, -3.5, -5.5, 0));
-  group.add(makeBox(2.1, 0.1, 2.1, goldMat, -3.5, -1.5, 0));
-  group.add(makeBox(2.1, 0.1, 2.1, goldMat, -3.5, 1.5, 0));
-
-  // Side wing R
-  group.add(makeBox(2, 8, 2, darkMat, 3.5, -2, 0));
-  group.add(makeBox(2.1, 0.1, 2.1, goldMat, 3.5, -5.5, 0));
-  group.add(makeBox(2.1, 0.1, 2.1, goldMat, 3.5, -1.5, 0));
-  group.add(makeBox(2.1, 0.1, 2.1, goldMat, 3.5, 1.5, 0));
-
-  // Base plinth
-  group.add(makeBox(10, 1, 4, darkMat, 0, -7, 0));
-  group.add(makeBox(10.2, 0.12, 4.2, goldMat, 0, -6.4, 0));
-
-  // Wireframe overlay (same shapes, half size, rotated)
-  const wireGroup = new THREE.Group();
-  scene.add(wireGroup);
-  const wg1 = new THREE.Mesh(new THREE.BoxGeometry(8, 16, 8), wireMat);
-  wg1.position.set(2, 0, -4);
-  wg1.rotation.y = 0.4;
-  wireGroup.add(wg1);
-  const wg2 = new THREE.Mesh(new THREE.BoxGeometry(5, 10, 5), wireMat);
-  wg2.position.set(-4, 1, -6);
-  wg2.rotation.y = -0.3;
-  wireGroup.add(wg2);
-
-  // Floating particles
-  const partGeo = new THREE.BufferGeometry();
-  const partCount = 120;
-  const positions = new Float32Array(partCount * 3);
-  for (let i = 0; i < partCount * 3; i++) {
-    positions[i] = (Math.random() - 0.5) * 40;
-  }
-  partGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  const partMat = new THREE.PointsMaterial({ color: 0xC9A96E, size: 0.06, opacity: 0.5, transparent: true });
-  const particles = new THREE.Points(partGeo, partMat);
-  scene.add(particles);
-
-  // Mouse parallax
-  let mouseX = 0, mouseY = 0;
-  document.addEventListener('mousemove', e => {
-    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-  });
-
-  let t = 0;
-  function animate() {
-    requestAnimationFrame(animate);
-    t += 0.008;
-    group.rotation.y += (mouseX * 0.4 - group.rotation.y) * 0.04;
-    group.rotation.x += (-mouseY * 0.15 - group.rotation.x) * 0.04;
-    group.position.y = Math.sin(t * 0.5) * 0.3;
-    wireGroup.rotation.y = t * 0.12;
-    wireGroup.rotation.x = Math.sin(t * 0.3) * 0.1;
-    particles.rotation.y = t * 0.04;
-    particles.rotation.x = t * 0.02;
-    renderer.render(scene, camera);
-  }
-  animate();
-
-  window.addEventListener('resize', () => {
-    const w = canvas.offsetWidth, h = canvas.offsetHeight;
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-    renderer.setSize(w, h);
-  });
+  scene.add(new THREE.AmbientLight(0xffffff, 0.2));
+  const dl = new THREE.DirectionalLight(0xC9A96E, 1.2); dl.position.set(5, 10, 8); scene.add(dl);
+  const rl = new THREE.DirectionalLight(0x4060A0, 0.4); rl.position.set(-8, -5, -5); scene.add(rl);
+  const pl = new THREE.PointLight(0xC9A96E, 0.8, 40); pl.position.set(-6, 6, 10); scene.add(pl);
+  const gM = new THREE.MeshStandardMaterial({ color: 0xC9A96E, metalness: 0.9, roughness: 0.25 });
+  const wM = new THREE.MeshStandardMaterial({ color: 0xC9A96E, metalness: 0.5, roughness: 0.4, wireframe: true, opacity: 0.12, transparent: true });
+  const dM = new THREE.MeshStandardMaterial({ color: 0x1A1A1A, metalness: 0.8, roughness: 0.3 });
+  const group = new THREE.Group(); scene.add(group);
+  function box(w,h,d,m,x,y,z){const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);mesh.position.set(x,y,z);return mesh;}
+  [box(3,12,3,dM,0,0,0),box(3.1,.12,3.1,gM,0,-5.5,0),box(3.1,.12,3.1,gM,0,-2,0),box(3.1,.12,3.1,gM,0,1.5,0),box(3.1,.12,3.1,gM,0,5,0),box(.5,2,.5,gM,0,7,0),
+   box(2,8,2,dM,-3.5,-2,0),box(2.1,.1,2.1,gM,-3.5,-5.5,0),box(2.1,.1,2.1,gM,-3.5,-1.5,0),box(2.1,.1,2.1,gM,-3.5,1.5,0),
+   box(2,8,2,dM,3.5,-2,0),box(2.1,.1,2.1,gM,3.5,-5.5,0),box(2.1,.1,2.1,gM,3.5,-1.5,0),box(2.1,.1,2.1,gM,3.5,1.5,0),
+   box(10,1,4,dM,0,-7,0),box(10.2,.12,4.2,gM,0,-6.4,0)].forEach(m=>group.add(m));
+  const wg = new THREE.Group(); scene.add(wg);
+  const w1=new THREE.Mesh(new THREE.BoxGeometry(8,16,8),wM); w1.position.set(2,0,-4); w1.rotation.y=0.4; wg.add(w1);
+  const w2=new THREE.Mesh(new THREE.BoxGeometry(5,10,5),wM); w2.position.set(-4,1,-6); w2.rotation.y=-0.3; wg.add(w2);
+  const pg=new THREE.BufferGeometry(); const pos=new Float32Array(360);
+  for(let i=0;i<360;i++) pos[i]=(Math.random()-.5)*40;
+  pg.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  const pts=new THREE.Points(pg,new THREE.PointsMaterial({color:0xC9A96E,size:0.06,opacity:0.5,transparent:true})); scene.add(pts);
+  let mouseX=0,mouseY=0;
+  document.addEventListener('mousemove',e=>{mouseX=(e.clientX/window.innerWidth-.5)*2;mouseY=(e.clientY/window.innerHeight-.5)*2;});
+  let t=0;
+  (function animate(){requestAnimationFrame(animate);t+=0.008;
+    group.rotation.y+=(mouseX*.4-group.rotation.y)*.04;
+    group.rotation.x+=(-mouseY*.15-group.rotation.x)*.04;
+    group.position.y=Math.sin(t*.5)*.3;
+    wg.rotation.y=t*.12; wg.rotation.x=Math.sin(t*.3)*.1;
+    pts.rotation.y=t*.04; pts.rotation.x=t*.02;
+    renderer.render(scene,camera);})();
+  window.addEventListener('resize',()=>{const w=canvas.offsetWidth,h=canvas.offsetHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);});
 })();
 
-// ─── SCROLL REVEAL ───
-const revealEls = document.querySelectorAll('.reveal, .stat-item, .process-step');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-}, { threshold: 0.15 });
-revealEls.forEach(el => observer.observe(el));
+// REVEAL
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:0.15});
+document.querySelectorAll('.reveal,.stat-item,.process-step').forEach(el=>obs.observe(el));
 
-// ─── COUNTER ANIMATION ───
-function animateCount(el, target) {
-  let start = 0;
-  const dur = 1800;
-  const step = timestamp => {
-    if (!start) start = timestamp;
-    const p = Math.min((timestamp - start) / dur, 1);
-    const ease = 1 - Math.pow(1 - p, 3);
-    el.textContent = Math.floor(ease * target);
-    if (p < 1) requestAnimationFrame(step);
-    else el.textContent = target + '+';
-  };
-  requestAnimationFrame(step);
-}
-const statObserver = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      const numEl = e.target.querySelector('.stat-num');
-      const target = parseInt(numEl.dataset.target);
-      animateCount(numEl, target);
-      statObserver.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.5 });
-document.querySelectorAll('.stat-item').forEach(el => statObserver.observe(el));
+// COUNTERS
+const sObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){
+  const el=e.target.querySelector('.stat-num'),target=parseInt(el.dataset.target);
+  let start=0;(function step(ts){if(!start)start=ts;const p=Math.min((ts-start)/1800,1),ease=1-Math.pow(1-p,3);
+  el.textContent=Math.floor(ease*target);if(p<1)requestAnimationFrame(step);else el.textContent=target+'+';})(performance.now());
+  sObs.unobserve(e.target);}});},{threshold:0.5});
+document.querySelectorAll('.stat-item').forEach(el=>sObs.observe(el));
 
-// ─── TESTIMONIALS ───
-let currentSlide = 0;
-const slides = document.querySelectorAll('.testimonial-slide');
-const dots = document.querySelectorAll('.t-dot');
-function goTo(n) {
-  slides[currentSlide].classList.remove('active');
-  dots[currentSlide].classList.remove('active');
-  currentSlide = (n + slides.length) % slides.length;
-  slides[currentSlide].classList.add('active');
-  dots[currentSlide].classList.add('active');
-}
-document.getElementById('tNext').addEventListener('click', () => goTo(currentSlide + 1));
-document.getElementById('tPrev').addEventListener('click', () => goTo(currentSlide - 1));
-dots.forEach(d => d.addEventListener('click', () => goTo(parseInt(d.dataset.index))));
-setInterval(() => goTo(currentSlide + 1), 6000);
+// TESTIMONIALS
+let cur=0;const slides=document.querySelectorAll('.testimonial-slide'),dots=document.querySelectorAll('.t-dot');
+function goTo(n){slides[cur].classList.remove('active');dots[cur].classList.remove('active');cur=(n+slides.length)%slides.length;slides[cur].classList.add('active');dots[cur].classList.add('active');}
+document.getElementById('tNext').addEventListener('click',()=>goTo(cur+1));
+document.getElementById('tPrev').addEventListener('click',()=>goTo(cur-1));
+dots.forEach(d=>d.addEventListener('click',()=>goTo(parseInt(d.dataset.index))));
+setInterval(()=>goTo(cur+1),6000);
 
-// ─── PORTFOLIO FILTER ───
-const filterBtns = document.querySelectorAll('.filter-btn');
-filterBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    filterBtns.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const filter = btn.dataset.filter;
-    document.querySelectorAll('.portfolio-item').forEach(item => {
-      const show = filter === 'all' || item.dataset.category === filter;
-      item.style.opacity = show ? '1' : '0.2';
-      item.style.pointerEvents = show ?
+// FILTER
+document.querySelectorAll('.filter-btn').forEach(btn=>{btn.addEventListener('click',()=>{
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  const f=btn.dataset.filter;
+  document.querySelectorAll('.portfolio-item').forEach(item=>{const show=f==='all'||item.dataset.category===f;item.style.opacity=show?'1':'0.2';item.style.pointerEvents=show?'auto':'none';});
+});});
+
+// FORM
+function handleSubmit(btn){btn.textContent='Sending...';btn.disabled=true;setTimeout(()=>{btn.textContent='Enquiry Sent ✓';btn.style.background='#4CAF50';btn.style.color='#fff';},1400);}
+</script>
+</body>
+</html>
